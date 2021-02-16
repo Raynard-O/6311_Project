@@ -3,7 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/labstack/echo"
-	"log"
+	"github.com/stretchr/testify/assert"
 	"sync"
 	"testing"
 	"time"
@@ -14,21 +14,12 @@ func process(index int , wg *sync.WaitGroup, e *echo.Echo) {
 	e.Shutdown(nil)
 	wg.Done()
 }
+
+// TestNew
+// checks for error in the server instance
 func TestNew(t *testing.T) {
 	e := New()
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	c := make(chan error)
-	go func() {
-		//err := error(nil)
-		if err := e.Start(":6311"); err != nil{
-			c <- err
-		}
-		wg.Done()
-	}()
 
-	log.Println(<-c)
-	wg.Wait()
-
-	t.Errorf("Error starting server: %v", <-c)
+	//con
+	assert.NotNil(t, e)
 }
