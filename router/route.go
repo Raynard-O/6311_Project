@@ -1,13 +1,16 @@
 package router
 
-import "github.com/labstack/echo"
+import (
+	"6311_Project/controllers"
+	"github.com/labstack/echo"
+)
 
 func New() *echo.Echo {
 	e := echo.New()
 
-	e.GET("/", func(context echo.Context) error {
-		return context.JSON(200, "welcome home")
-	})
+	author := controllers.InterfaceUsers(controllers.NewAuthor())
+
+	e.GET("/", author.CreateUser)
 
 	return e
 }
