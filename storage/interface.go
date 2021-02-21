@@ -1,0 +1,19 @@
+package storage
+
+import "6311_Project/models"
+
+//Data
+type InterfaceDB interface {
+	AuthorSave(user interface{}, Collection string) (models.Author, error)
+	FindByID(id interface{}, projection map[string]interface{}, result interface{}) error
+	FindOne(collection string, key, pair string) (*models.Author, error)
+	UpdateOneUser(fields map[string]interface{}, changes interface{}) error
+	FindOneUser(collection string, key, pair string, result interface{}) error
+
+	// Readers function
+	ReaderSave(user interface{}, Collection string) (models.Reader, error)
+
+	//book functions
+	BookSave(user interface{}, Collection string) (models.Book, error)
+
+}

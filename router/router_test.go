@@ -19,7 +19,5 @@ func process(index int , wg *sync.WaitGroup, e *echo.Echo) {
 // checks for error in the server instance
 func TestNew(t *testing.T) {
 	e := New()
-
-	//con
 	assert.NotNil(t, e)
 }

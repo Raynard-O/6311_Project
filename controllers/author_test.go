@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestNewAuthor(t *testing.T) {
 	newAuthor := NewAuthor()
 	assert.NotNil(t, newAuthor)
