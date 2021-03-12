@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"6311_Project/models"
+	"6311_Project/storage"
 	"fmt"
 	"github.com/labstack/echo"
+	"log"
 	"sync"
 )
 
@@ -15,14 +18,25 @@ type readerEventType bool
 
 // AddEvent
 // create event in a concurrent process.
-func AddEvent(t readerEventType, wg *sync.WaitGroup) {
-	//check the kind of event
+func AddEvent(t readerEventType, wg *sync.WaitGroup, in interface{}, DB storage.InterfaceDB) {
 	if t {
 		// add the event to readers event database
-	fmt.Println("we are in the thread, readers function")
+		bE := in.(*models.ReaderEvent)
+
+		events , err := DB.EventSave(bE, "events", true)
+		if err != nil {
+			log.Fatal(err)
+		}
+	fmt.Println("we are in the thread, readers function", events)
 	}else {
 		// add to books event database
-		fmt.Println("we are in the thread, book function")
+		bE := in.(*models.AuthorEvent)
+
+		events , err := DB.EventSave(bE, "events", true)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("we are in the thread, book function", events)
 	}
 	wg.Done()
 }

@@ -22,7 +22,6 @@ type User struct {
 	Password string 	`json:"password" bson:"password"`
 }
 
-type events struct {
+type Events struct {
 	EventTime time.Time `json:"event_time" bon:"event_time"`
-	EventID		primitive.ObjectID `json:"event_id" bson:"event_id"`
 }

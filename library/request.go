@@ -29,3 +29,9 @@ type CreateBookParams struct {
 	Pages	int8 	`json:"pages"`
 	Content string	`json:"content"`
 }
+
+type SearchBookParams struct {
+	Title string `json:"title"`
+	Name        string `json:"name"`
+	Pages	int8 	`json:"pages"`
+}

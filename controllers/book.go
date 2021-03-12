@@ -6,6 +6,7 @@ import (
 	"6311_Project/models"
 	"6311_Project/storage"
 	"context"
+	"fmt"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
@@ -38,11 +39,24 @@ func (b *books) Create(c echo.Context) error {
 	book := parseObject(params)
 
 	books, err := DB.BookSave(book, b.title)
+	log.Println("book and author event  successfully created")
 	// add event to ICDE database
+
+
+	e := &models.AuthorEvent{
+		EventID: primitive.NewObjectID(),
+		BookTitle: books.BookName,
+		Authors:  books.Authors,
+		EventType: "author",
+		Event:  models.Events{
+			EventTime: time.Time{},
+		},
+	}
+
 	//created go routines
 	b.wg.Add(1)
 	go func() {
-		AddEvent(readerEventType(false), &b.wg)
+		AddEvent(readerEventType(false), &b.wg,e, DB)
 	}()
 
 	if err != nil {
@@ -50,13 +64,14 @@ func (b *books) Create(c echo.Context) error {
 	}
 	//  wait for process to end
 	b.wg.Wait()
-	log.Println("reader successfully created")
+	log.Println("book and author event  successfully created")
 	return bookLibrary.BookResponseData(c, &books, "", books.BookName)
 }
 
+
 func parseObject( params *library.CreateBookParams) *models.Book {
 
-	aut := []string{}
+	var aut []string
 	book := models.Book{
 		BookID:     primitive.NewObjectID(),
 		BookName:   params.Name,
@@ -68,6 +83,80 @@ func parseObject( params *library.CreateBookParams) *models.Book {
 	return &book
 }
 
-func (b *books) Login(c echo.Context) error {
-	return nil
+func (b *books) Search(c echo.Context) error {
+
+	DB, err := storage.MongoInit("ICDE", "books", context.Background())
+
+	if err != nil {
+		return InternalError(c, err.Error())
+	}
+	params := new(library.SearchBookParams)
+	err = c.Bind(params)
+	if err != nil {
+		return InternalError(c, err.Error())
+	}
+	field := make(map[string]interface{})
+
+	field["bookname"] = params.Name
+
+	var output interface{}
+	fmt.Println(field)
+	err = DB.FindMany(field, nil, nil, 0, 0, &output)
+	if err != nil {
+		return BadRequestResponse(c, err.Error())
+	}
+
+	return c.JSONPretty(200, output,"")
+}
+
+
+//func (d *mongoconn) FindByID(id interface{}, projection map[string]interface{}, result interface{}) error {
+
+
+
+func (b *books) Select(c echo.Context) error {
+	DB, err := storage.MongoInit("ICDE", "books", context.Background())
+
+	if err != nil {
+		return InternalError(c, err.Error())
+	}
+
+	id := c.QueryParam("id")
+	OID, err  := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		return BadRequestResponse(c, err.Error())
+	}
+	book := new(models.Book)
+
+	err = DB.FindByID(OID, nil, &book )
+	if err != nil {
+		return BadRequestResponse(c, err.Error())
+	}
+
+
+
+	e := &models.ReaderEvent{
+		EventID:    primitive.NewObjectID(),
+		BookTitle:  book.BookName,
+		Authors: book.Authors,
+		UserID:     primitive.ObjectID{},
+		EventType: "author",
+		Event:      models.Events{
+			EventTime: time.Time{},
+		},
+	}
+	//created go routines
+	b.wg.Add(1)
+	go func() {
+		AddEvent(readerEventType(true), &b.wg,e, DB)
+	}()
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	//  wait for process to end
+	b.wg.Wait()
+	log.Println("book and author event  successfully created")
+	return c.JSONPretty(200, book, "")
 }

@@ -19,7 +19,9 @@ type Author struct {
 
 //AuthorEvent describes the event stored in the ICDE database
 type AuthorEvent struct {
+	EventID primitive.ObjectID `json:"_id" bson:"_id"`
 	BookTitle string `json:"book_title" bson:"book_title"`
-	AuthorID primitive.ObjectID `json:"author_id" bson:"author_id"`
-	Event events	`json:"event" bson:"event"`
+	Authors []string `json:"authors" bson:"authors"`
+	Event Events	`json:"event" bson:"event"`
+	EventType string `json:"event_type" bson:"event_type"`
 }

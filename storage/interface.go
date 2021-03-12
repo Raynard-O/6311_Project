@@ -16,4 +16,9 @@ type InterfaceDB interface {
 	//book functions
 	BookSave(user interface{}, Collection string) (models.Book, error)
 
+
+	// event
+	EventSave(user interface{}, Collection string, EventType bool) (interface{}, error)
+	FindMany(fields, projection, sort map[string]interface{}, limit, skip int64, results interface{}) error
+
 }

@@ -77,7 +77,7 @@ func (a *Author) Create(c echo.Context) error {
 
 }
 
-func  (a *Author) Login(c echo.Context) error {
+func  (a *Author) Search(c echo.Context) error {
 	DB, err := storage.MongoInit("ICDE", "authors", context.Background())
 
 	if err != nil {
@@ -116,3 +116,6 @@ func  (a *Author) Login(c echo.Context) error {
 	return author.LoginUser(c, userData)
 }
 
+func  (a *Author) Select(c echo.Context) error {
+	return nil
+}

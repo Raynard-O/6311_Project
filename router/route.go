@@ -27,22 +27,33 @@ func New() *echo.Echo {
 	fmt.Println(secret.HmacSigningKey)
 
 	auth := e.Group("/auth")
-	readers := auth.Group("/reader")
-	authors := auth.Group("/author")
-	books := authors.Group("/book")
+
+
+
 	author := controllers.InterfaceUsers(controllers.NewAuthor())
 	reader := controllers.InterfaceUsers(controllers.NewReader())
 	book := controllers.InterfaceUsers(controllers.NewBook())
+
+	authors := auth.Group("/author")
 	authors.POST("/signup", author.Create)
+	authors.POST("/signin", author.Search)
+
+
+	readers := auth.Group("/reader")
 	readers.POST("/signup", reader.Create)
+	readers.POST("/signin", reader.Search)
 
-	authors.POST("/signin", author.Login)
-	readers.POST("/signin", reader.Login)
 
+	books := authors.Group("/book")
 	books.POST("/add", book.Create)
+	books.GET("/search", book.Search)
+	books.GET("/select", book.Select)
 
 	return e
 }
+
+
+
 
 func distance(ctx context.Context, k debugContext)  {
 	v := ctx.Value(k)

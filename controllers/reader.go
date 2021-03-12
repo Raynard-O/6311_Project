@@ -82,7 +82,7 @@ func (a *Reader) Create(c echo.Context) error {
 }
 
 
-func  (a *Reader) Login(c echo.Context) error {
+func  (a *Reader) Search(c echo.Context) error {
 	DB, err := storage.MongoInit("ICDE", a.title, context.Background())
 
 	if err != nil {
@@ -120,4 +120,6 @@ func  (a *Reader) Login(c echo.Context) error {
 	return reader.LoginUser(c, userData)
 }
 
-
+func  (a *Reader) Select(c echo.Context) error {
+	return nil
+}
