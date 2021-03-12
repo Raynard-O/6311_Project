@@ -96,8 +96,10 @@ func (b *books) Search(c echo.Context) error {
 		return InternalError(c, err.Error())
 	}
 	field := make(map[string]interface{})
+	filter := make(map[string]interface{})
+	filter["$regex"] = params.Name
 
-	field["bookname"] = params.Name
+	field["bookname"] = filter
 
 	var output interface{}
 	fmt.Println(field)
@@ -133,7 +135,6 @@ func (b *books) Select(c echo.Context) error {
 	if err != nil {
 		return BadRequestResponse(c, err.Error())
 	}
-
 
 
 	e := &models.ReaderEvent{

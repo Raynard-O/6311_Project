@@ -40,7 +40,10 @@ func (d *mongoconn) FindMany(fields, projection, sort map[string]interface{}, li
 		ops.Sort = sort
 	}
 
-	cursor, err := d.mongoDb.Collection("books").Find(nil, fields, ops)
+
+	cursor, err :=  d.mongoDb.Collection("books").Find(nil, fields, ops)
+
+	//cursor, err := d.mongoDb.Collection("books").Find(nil, fields, ops)
 	if err != nil {
 		return err
 	}

@@ -9,4 +9,5 @@ func recommend(c echo.Context) error {
 	//filter the author events
 	//get reader who searched for the this author
 	//send new author events to reader
+	return nil
 }
