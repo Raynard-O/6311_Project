@@ -2,11 +2,12 @@ public class Bike implements User{
     private String message;
     private Integer id;
     private Boolean security;
-    private Integer[] coordinates;
+    private Integer[][] coordinates;
 
     @Override
     public void notify(Object message){
         setMessage((String) message);
+        setSecurity(false);
     }
     @Override
     public void setId(Object id) {
@@ -28,27 +29,32 @@ public class Bike implements User{
         this.security = secure;
     }
 
-    public void intervention(){
+    public Boolean getSecurity() {
+        return security;
+    }
+
+    public Boolean intervention(){
         if (message != null) {
             setMessage(null);
             Cancel();
         }
+        return true;
     }
 
     public void Cancel(){
         setSecurity(false);
     }
-
-    public void setCoordinates(int[] coordinates) {
-        this.coordinates = this.coordinates;
+    @Override
+    public void setCoordinates(Integer[][] coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public Integer[] getCoordinates() {
+    public Integer[][] getCoordinates() {
         return coordinates;
     }
 
     public void Track(Object o){
-        setCoordinates((int[]) o);
+        setCoordinates((Integer[][]) o);
     }
 
 }

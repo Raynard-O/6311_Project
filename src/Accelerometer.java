@@ -1,4 +1,4 @@
-public class Accelerometer extends GPS_SYSTEM{
+public class Accelerometer extends Microcontroller{
     private final Integer[] accelerometerInitValue = new Integer[3];
     int AcceIndex = 0;
 

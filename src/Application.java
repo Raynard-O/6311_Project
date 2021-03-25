@@ -7,6 +7,10 @@ public class Application {
     private Integer[][] coordinates;
 
 
+    public Application(){
+        super();
+    }
+
     private List<User> users = new ArrayList<>();
     int upperbound = users.size();
 
@@ -32,10 +36,8 @@ public class Application {
             user.notify(this.notification);
         }
     }
-    public Integer[][] getCoordinate(){
-
-//        System.arraycopy(accelerometer,0, coordinates, 0, accelerometer.length);
-//        System.arraycopy(gyroscope,0, coordinates, accelerometer.length, gyroscope.length);
+    public Integer[][] getCoordinate(User user){
+        user.setCoordinates(coordinates);
         return coordinates;
     }
 
@@ -47,6 +49,11 @@ public class Application {
         // if no intervention
         user.Track(coordinates);
     }
+    public GPS_SYSTEM getMC(GPS_SYSTEM MC){
+
+        return MC;
+    }
+
 
 }
 

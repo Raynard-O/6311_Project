@@ -1,4 +1,4 @@
-public class gyroscope extends GPS_SYSTEM {
+public class gyroscope extends Microcontroller {
     private final Integer[] gyroscopeInitValue = new Integer[3];
 
     int GyscIndex = 1;
