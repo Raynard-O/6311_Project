@@ -48,8 +48,5 @@ public class Application {
         user.Track(coordinates);
     }
 
-
-
-
 }
 

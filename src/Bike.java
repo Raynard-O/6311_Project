@@ -16,6 +16,7 @@ public class Bike implements User{
     public Integer getId() {
         return id;
     }
+
     public String getMessage() {
         return message;
     }
