@@ -7,9 +7,9 @@ import static org.junit.Assert.assertEquals;
 public class BikeTest {
 
     @Test
-    public void WhenApplicationChangesState_thenNotifyUser(){
+    public void WhenApplicationChangesState_thenNotifyUser() {
         Microcontroller observable = new Microcontroller();
-        User        observer = new Bike();
+        User observer = new Bike();
 
         observable.addUser(observer);
         //check for changes
@@ -24,7 +24,7 @@ public class BikeTest {
             // assert that system is still secure if intervention occurs
             assertEquals(observer.getSecurity(), true);
             assertEquals(observer.getMessage(), null);
-        }else {
+        } else {
             // track device
             while (observer.intervention()) {
                 observer.Track(observer.getCoordinates());
@@ -34,16 +34,6 @@ public class BikeTest {
 
 
     }
-
-//    @Test
-//    public void WhenApplicationChangesState_thenNotifyUser(){
-//        Application observable = new Application();
-//        User        observer = new Bike();
-//
-//        observable.addUser(observer);
-//        observable.setNotification("Change In State");
-//        assertEquals(observer., "news");
-//    }
 
 }
 
