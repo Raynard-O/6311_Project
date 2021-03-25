@@ -4,13 +4,7 @@ import java.util.Random;
 
 public class Application {
     private String notification;
-    private Integer Ax;
-    private Integer Ay;
-    private Integer Az;
-    private Integer Gx;
-    private Integer Gy;
-    private Integer Gz;
-    private int[] coordinates;
+    private Integer[][] coordinates;
 
 
     private List<User> users = new ArrayList<>();
@@ -38,17 +32,24 @@ public class Application {
             user.notify(this.notification);
         }
     }
-    public int[] getCoordinate(){
-        int[] accelerometer = new int[3];
-        int[] gyroscope = new int[3];
-        System.arraycopy(accelerometer,0, coordinates, 0, accelerometer.length);
-        System.arraycopy(gyroscope,0, coordinates, accelerometer.length, gyroscope.length);
+    public Integer[][] getCoordinate(){
+
+//        System.arraycopy(accelerometer,0, coordinates, 0, accelerometer.length);
+//        System.arraycopy(gyroscope,0, coordinates, accelerometer.length, gyroscope.length);
         return coordinates;
+    }
+
+    public void setCoordinates(Integer[][] cord) {
+        this.coordinates = cord;
     }
 
     public void sendCoordinates(User user){
         // if no intervention
         user.Track(coordinates);
     }
+
+
+
+
 }
 
