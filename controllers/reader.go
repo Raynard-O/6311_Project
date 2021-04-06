@@ -111,6 +111,7 @@ func  (a *Reader) Search(c echo.Context) error {
 		}
 		//userData = user
 	}
+
 	passBool := library.CompareHashWithPassword(userData.Password, params.Password)
 	log.Print(passBool)
 	if !passBool {

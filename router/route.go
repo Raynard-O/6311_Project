@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/labstack/echo"
+	"net/http"
 )
 
 type Control struct {
@@ -25,7 +26,9 @@ func New() *echo.Echo {
 
 	secret, _ := config.LoadSecrets(c.debug)
 	fmt.Println(secret.HmacSigningKey)
-
+	e.GET("/", func(c echo.Context) error {
+		return c.JSONPretty(http.StatusAccepted, "entrypoint", "")
+	})
 	auth := e.Group("/auth")
 
 

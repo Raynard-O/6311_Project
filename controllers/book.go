@@ -41,8 +41,6 @@ func (b *books) Create(c echo.Context) error {
 	books, err := DB.BookSave(book, b.title)
 	log.Println("book and author event  successfully created")
 	// add event to ICDE database
-
-
 	e := &models.AuthorEvent{
 		EventID: primitive.NewObjectID(),
 		BookTitle: books.BookName,
@@ -107,13 +105,10 @@ func (b *books) Search(c echo.Context) error {
 	if err != nil {
 		return BadRequestResponse(c, err.Error())
 	}
+	c.Set("id", "gdjhbcvschbsb")
 
 	return c.JSONPretty(200, output,"")
 }
-
-
-//func (d *mongoconn) FindByID(id interface{}, projection map[string]interface{}, result interface{}) error {
-
 
 
 func (b *books) Select(c echo.Context) error {
@@ -136,7 +131,9 @@ func (b *books) Select(c echo.Context) error {
 		return BadRequestResponse(c, err.Error())
 	}
 
+	i := c.Get("id")
 
+	fmt.Printf("context is : %v\n", i)
 	e := &models.ReaderEvent{
 		EventID:    primitive.NewObjectID(),
 		BookTitle:  book.BookName,
@@ -161,3 +158,6 @@ func (b *books) Select(c echo.Context) error {
 	log.Println("book and author event  successfully created")
 	return c.JSONPretty(200, book, "")
 }
+
+
+// when logged in, send the id to the frontend, let the frontend embed it in the ip everytime it sends a requst so we know who is sending the request
