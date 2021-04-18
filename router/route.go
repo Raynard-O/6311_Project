@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"net/http"
 )
 
@@ -19,6 +20,20 @@ func New() *echo.Echo {
 	c := control()
 
 	e := echo.New()
+
+
+	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Level: 5,
+	}))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{echo.GET, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+	}))
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	//templates
+
 
 	//j := debugContext("control")
 	//ctx = context.WithValue(context.Background(), j, c.debug)
@@ -37,16 +52,19 @@ func New() *echo.Echo {
 	reader := controllers.InterfaceUsers(controllers.NewReader())
 	book := controllers.InterfaceUsers(controllers.NewBook())
 
+
+	//url = auth/author/
 	authors := auth.Group("/author")
 	authors.POST("/signup", author.Create)
 	authors.POST("/signin", author.Search)
 
-
+	//url = auth/reader/
 	readers := auth.Group("/reader")
 	readers.POST("/signup", reader.Create)
 	readers.POST("/signin", reader.Search)
 
 
+	//url = auth/author/book/
 	books := authors.Group("/book")
 	books.POST("/add", book.Create)
 	books.GET("/search", book.Search)

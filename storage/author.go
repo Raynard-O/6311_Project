@@ -29,9 +29,7 @@ func (d *mongoconn) AuthorSave(user interface{}, Collection string) (models.Auth
 	return output, nil
 }
 
-/**
- * Find One by
- */
+// FindOne /**
 func (d *mongoconn) FindOne(collection string, key, pair string) (*models.Author, error) {
 	result := new(models.Author)
 	filter := bson.M{key: pair}
@@ -46,9 +44,9 @@ func (d *mongoconn) FindOne(collection string, key, pair string) (*models.Author
 	return result, nil
 }
 
-
+// FindByID /**
 /**
- * FindByID
+ *
  * find a single record by id in the mongoStore
  * returns nil if record isn't found.
  *

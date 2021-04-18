@@ -25,8 +25,8 @@ func AuthorResponseData(c echo.Context, user *models.Author, token string, chann
 	response := Response{
 		User: UserResponse{
 			ID:       user.ID,
-			Email:    user.User.Email,
-			Username: user.User.Username,
+			Email:    user.Email,
+			Username: user.Username,
 			Channel:  channel,
 			Active:   user.Active,
 		},
@@ -34,15 +34,15 @@ func AuthorResponseData(c echo.Context, user *models.Author, token string, chann
 		Success: true,
 	}
 
-	return c.JSONPretty(http.StatusOK, response, "")
+	return c.JSONPretty(http.StatusOK, &response, "")
 }
 
 func LoginUserResponse(c echo.Context, user *models.Author, token string, channel string) error {
 	response := Response{
 		User: UserResponse{
 			ID:       user.ID,
-			Email:    user.User.Email,
-			Username: user.User.Username,
+			Email:    user.Email,
+			Username: user.Username,
 			Channel:  channel,
 			Active:   user.Active,
 		},

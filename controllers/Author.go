@@ -73,7 +73,8 @@ func (a *Author) Create(c echo.Context) error {
 		log.Fatal(err.Error())
 	}
 	log.Println("author successfully created")
-	return author.AuthorResponseData(c, &users, "", user.User.Email)
+	log.Println(users)
+	return author.AuthorResponseData(c, &users, "", user.Email)
 
 }
 
@@ -92,7 +93,7 @@ func  (a *Author) Search(c echo.Context) error {
 	userData := new(models.Author)
 	if params.Email != "" {
 		//fmt.Println(params.Email)
-		err = DB.FindOneUser("authors", "username", params.Username, &userData)
+		err = DB.FindOneUser("authors", "email", params.Email, &userData)
 		//userDate2, err := DB.FindOne("users", "email", params.Email)
 		if err != nil {
 			return BadRequestResponse(c, err.Error())

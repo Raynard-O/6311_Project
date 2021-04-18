@@ -1,0 +1,8 @@
+<div *ngIf="book" class="background">
+    <h2 class="header">{{book.name}} details!</h2>
+    <div class="content"><label class="preview">Book ID: </label>{{book.id}}</div>
+    <div class="content"><label class="preview">Book Author: </label>{{book.author}}</div>
+    <div class="content"><label class="preview">Number of Pages: </label>{{book.Chapter}}</div>
+    <div class="content-text"><label class="preview-content">Preview: </label>{{book.Content}}</div>
+    <button style="color: black;background-color:burlywood;width: 100%;font-size: 30px;" (click)="goBack()">Go to Previous Page</button>
+</div>

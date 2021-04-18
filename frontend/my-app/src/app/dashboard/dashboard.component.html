@@ -1,0 +1,14 @@
+<div class="background">
+    <h3 style="color:whitesmoke;text-align:center;font-size: 25px;padding-right: 40px;">Recently Viewed Books</h3>
+    <div class="grid grid-pad">
+        <div *ngFor="let book of books" routerLink="/detail/{{book.id}}" class="col-1-4 ">
+            <div class="module book">
+                <h4>{{book.name}}</h4>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;padding-top: 200px;">
+        <button style="margin: 5px;" class="btn" routerLink="/books" routerLinkActive="active">View All Books</button> 
+        <button class="btn" routerLink="/home" routerLinkActive="active">Go to Home Page</button>
+    </div>
+</div>

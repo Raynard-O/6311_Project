@@ -1,0 +1,29 @@
+<div class="background">
+<div class="text-center">
+    <h3 style="color:whitesmoke;text-align:center;font-size: 25px;padding-right: 40px;">Welcome to writer page!!</h3>
+    <h3 style="color:whitesmoke;text-align:center;font-size: 25px;padding-right: 40px;">New books can be uploaded here!!</h3>
+<br>
+    <input class="form-control" style="color:white;text-align: center;padding-left: 550px;width: 50%;" type="file" required='pdf'
+            (change)="onChange($event)">
+  <br>
+  <div style="padding-left: 500px;">
+        <button (click)="onUpload()" 
+        class="btn btn-success">
+        Upload
+    </button>
+  </div>
+  <div style="padding-top: 50px;padding-left: 500px;">
+    <button class="btn" routerLink="/home" routerLinkActive="active">Go to Home Page</button>
+</div>
+</div>
+
+<div class="container text-center jumbotron"
+    *ngIf="shortLink">
+    <h2 style="color: white;"> Visit Here</h2>
+    <a href="{{shortLink}}">{{shortLink}}</a>
+</div>
+
+<div class="container" *ngIf="loading">
+    <h3 style="color: white;"> Loading ...</h3>
+</div>
+</div>
