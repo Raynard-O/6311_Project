@@ -1,0 +1,60 @@
+<div class="background">
+  <h3 style="color:white;text-align:center;font-size: 25px;">User Registration</h3>
+  <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()" class="col-md-12" >
+    <div class="form-group" >
+      <label class="preview" for="firstName">First Name: </label>
+      <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.firstName.errors }" placeholder="Enter First Name here"/>
+          <div class="preview-req" *ngIf="submitted && fval.firstName.errors" class="invalid-feedback">
+              <div class="preview-req" *ngIf="fval.firstName.errors.required">First Name is required</div>
+          </div>
+    </div>
+  
+    <div class="form-group" >
+      <label class="preview" for="lastName">Last Name: </label>
+          <input type="text" formControlName="lastName" class="form-control" placeholder="Enter Last Name here"/>
+    </div>
+    <div class="form-group" >
+      <label class="preview" for="email">Email: </label>
+      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.email.errors }" placeholder="Enter email here"/>
+      <div class="preview-req" *ngIf="submitted && fval.email.errors" class="invalid-feedback">
+          <div class="preview-req" *ngIf="fval.email.errors.required">Email is required</div>
+          <div class="preview-req" *ngIf="fval.email.errors.email">Enter valid email address</div>
+      </div>
+    </div>
+    <div class="form-group" >
+      <label class="preview" for="email">Contact: </label>
+      <input type="text" formControlName="contact" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.contact.errors }" placeholder="Enter Contact here"/>
+      <div class="preview-req" *ngIf="submitted && fval.contact.errors" class="invalid-feedback">
+          <div class="preview-req" *ngIf="fval.contact.errors.required">Contact is required</div>
+      </div>
+    </div>
+  
+    <div class="form-group" >
+      <label class="preview" for="email">Password: </label>
+      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.password.errors }" placeholder="Enter Password here"/>
+      <div class="preview-req" *ngIf="submitted && fval.password.errors" class="invalid-feedback">
+          <div class="preview-req" *ngIf="fval.password.errors.required">Password is required</div>
+          <div class="preview-req" *ngIf="fval.password.errors.minlength">Password must be at least 8 characters</div>
+      </div>
+      
+    </div>
+  
+    <div class="form-group" >
+      <label class="preview" for="email">UserType: </label>
+      <input type="text" formControlName="userType" class="form-control" [ngClass]="{ 'is-invalid': submitted && fval.userType.errors }" placeholder="Enter Type of User here"/>
+      <div class="preview-req" *ngIf="submitted && fval.userType.errors" class="invalid-feedback">
+          <div class="preview-req" *ngIf="fval.userType.errors.required">UserType is required</div>
+      </div>
+      
+    </div>
+
+    <div class="form-group" style="text-align:center;padding-left: 200px;">
+      <button [disabled]="loading" class="btn btn-primary">
+          <span class="preview-req" *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Register
+      </button><br>
+      <h3 style="color:white;text-align:center;font-size: 20px;">Login using below button.!!</h3>
+      <button routerLink="/login" class="btn btn-link">Go to Login Page</button>
+  </div>
+  </form>
+</div>

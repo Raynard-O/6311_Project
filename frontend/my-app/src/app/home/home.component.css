@@ -1,0 +1,46 @@
+
+.background{
+    background-image: url('BFE_background_home.jpg');
+      width: 100%;
+    }
+  
+    input[type=text], input[type=password] {
+      width: 25%;
+      padding: 10px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      display: flex;
+    }
+  
+    .container {
+      padding: 16px;
+    }
+  
+    button {
+      background-color: burlywood;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 500px;
+      float: center;
+    }
+  
+    button:hover {
+      opacity: 0.8;
+    }
+  
+    .preview{
+      color: white;width:10%;font-size: 20px;padding-left: 500px;float: left;
+    }
+  
+    .preview-req{
+      color: red;width:100%;font-size: 20px;padding-left: 550px;font-weight: bold;
+    }
+  
+    .btn{
+      color: white;width:50;font-size: 20px;align-items: center;justify-content: center;
+    }

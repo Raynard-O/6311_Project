@@ -8,6 +8,7 @@ import (
 )
 
 type Secrets struct {
+	MONGO_ENV			string
 	MONGO_HOST         string
 	MONGO_DB           string
 	MONGO_USER         string
@@ -27,6 +28,10 @@ type Secrets struct {
 	GoogleSecret       string
 }
 
+
+
+
+
 const (
 	ServiceName = "comply"
 	Domain      = "io.roava"
@@ -36,13 +41,30 @@ const (
 
 var EventRoot = fmt.Sprintf("%s.%s", Domain, ServiceName)
 
+func Load() error {
+	if err := godotenv.Load(); err != nil {
+		return err
+	}
+	return nil
+}
+
+
+
 // LoadSecrets loads up Secrets from the .env file once.
 // If an env file is present, Secrets will be loaded, else it'll be ignored.
-func LoadSecrets() (*Secrets, error) {
-	if err := godotenv.Load(); err != nil {
-		return nil, err
+func LoadSecrets( debug bool) (*Secrets, error) {
+
+
+	//fmt.Print(debug)
+	if !debug {
+		err := Load()
+		if err != nil{
+			return nil, err
+		}
 	}
+
 	_secrets := &Secrets{
+		MONGO_ENV:         	os.Getenv("GO_ENV"),
 		mu:                 &sync.Mutex{},
 		MONGO_HOST:         os.Getenv("MONGO_HOST"),
 		MONGO_PORT:         os.Getenv("MONGO_PORT"),
@@ -68,11 +90,9 @@ func LoadSecrets() (*Secrets, error) {
 	return _secrets, nil
 }
 
-// WatchSecrets does management of hot update on Secrets from vault and any secret store provided.
-func WatchSecrets(_secrets *Secrets) {
-	_secrets.mu.Lock()
-	defer _secrets.mu.Unlock()
-
-	// TODO: Vault & Consul Business Here.
-}
-
+//type debugContext string
+//
+//func distance(ctx context.Context, k debugContext) *bool {
+//	v := ctx.Value(k).(*bool)
+//		return v
+//}

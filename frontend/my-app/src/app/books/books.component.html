@@ -1,0 +1,21 @@
+<div class="background">
+<h3 style="color:whitesmoke;text-align:center;font-size: 25px;padding-right: 40px;">List of Books!!</h3>
+    <ul class="books">
+      <li *ngFor="let book of books"
+        [class.selected]="book === selectedBook"
+        (click)="onSelect(book)">
+        <span class="badge">{{book.id}}</span> {{book.name}}
+      </li>
+    </ul>
+    <div *ngIf="selectedBook">
+      <h2 style="color:whitesmoke;text-align:center;font-size: 20px;padding-right: 40px;">
+        Selected Book: {{selectedBook.name | uppercase}}. Click on 'View Details' for more information.!
+      </h2>
+      <div style="text-align: center;">
+        <button class="btn" (click)="gotoDetail()">View Details</button>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <button class="btn" routerLink="/dashboard" routerLinkActive="active">Go to Dashboard</button>
+    </div>
+</div>

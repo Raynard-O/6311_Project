@@ -3,5 +3,8 @@ package controllers
 import "github.com/labstack/echo"
 
 type InterfaceUsers interface {
-	CreateUser(c echo.Context) error
+	Create(c echo.Context) error
+	Search(c echo.Context) error
+	Select(c echo.Context) error
 }
+
