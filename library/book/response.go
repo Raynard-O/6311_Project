@@ -12,20 +12,20 @@ import (
 type BookResponse struct {
 	ID       primitive.ObjectID
 	Name        string `json:"full_name"`
-	Author        []string `json:"author"`
+	Author        string `json:"author"`
 	Pages	int8 	`json:"pages"`
 	Content string	`json:"content"`
 }
 type Response struct {
-	User    BookResponse `json:"user"`
+	Book    BookResponse `json:"book"`
 	Token   string       `json:"token"`
 	Success bool         `json:"success"`
 }
 
 func BookResponseData(c echo.Context, book *models.Book, token string, channel string) error {
 	response := Response{
-		User: BookResponse{
-			ID:    book.BookID  ,
+		Book: BookResponse{
+			ID:    book.ID  ,
 			Name:    book.BookName,
 			Author:  book.Authors,
 			Pages:   book.Pages,

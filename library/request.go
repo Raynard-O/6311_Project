@@ -26,7 +26,7 @@ type SetPasswordParams struct {
 type CreateBookParams struct {
 	Name        string `json:"name"`
 	Author        string `json:"author"`
-	Pages	int8 	`json:"pages"`
+	Pages	string 	`json:"pages"`
 	Content string	`json:"content"`
 }
 

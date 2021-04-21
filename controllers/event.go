@@ -23,7 +23,7 @@ func AddEvent(t readerEventType, wg *sync.WaitGroup, in interface{}, DB storage.
 		// add the event to readers event database
 		bE := in.(*models.ReaderEvent)
 
-		events , err := DB.EventSave(bE, "events", true)
+		events , err := DB.EventSave(bE, "readerEventType", false)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -32,7 +32,7 @@ func AddEvent(t readerEventType, wg *sync.WaitGroup, in interface{}, DB storage.
 		// add to books event database
 		bE := in.(*models.AuthorEvent)
 
-		events , err := DB.EventSave(bE, "events", true)
+		events , err := DB.EventSave(bE, "authorEventType", true)
 		if err != nil {
 			log.Fatal(err)
 		}

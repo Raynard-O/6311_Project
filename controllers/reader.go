@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
+	"net/http"
 )
 
 type Reader struct {
@@ -97,7 +98,7 @@ func  (a *Reader) Search(c echo.Context) error {
 	userData := new(models.Reader)
 	if params.Email != "" {
 		fmt.Print(params.Email)
-		DB.FindOneUser(a.title, "username", params.Username, &userData)
+		DB.FindOneUser(a.title, "email", params.Email, &userData)
 		//user, err := DB.FindOne("users", "email", params.Email)
 		if err != nil {
 			return BadRequestResponse(c, err.Error())
@@ -123,4 +124,19 @@ func  (a *Reader) Search(c echo.Context) error {
 
 func  (a *Reader) Select(c echo.Context) error {
 	return nil
+}
+
+func GetAllNotifications(c echo.Context) error{
+	DB, err := storage.MongoInit("ICDE", "readers", context.Background())
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	i, err := primitive.ObjectIDFromHex("60802bd690da4a5904739017")
+	results := new(models.Reader)
+	DB.FindByID(i, nil, &results)
+
+
+	return c.JSONPretty(http.StatusOK, results.Notification, "")
 }

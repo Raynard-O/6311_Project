@@ -12,7 +12,7 @@ type InterfaceDB interface {
 
 	// Readers function
 	ReaderSave(user interface{}, Collection string) (models.Reader, error)
-
+	FindManyHistory(fields, projection, sort map[string]interface{}, limit, skip int64, results interface{}) error
 	//book functions
 	BookSave(user interface{}, Collection string) (models.Book, error)
 
@@ -20,5 +20,6 @@ type InterfaceDB interface {
 	// event
 	EventSave(user interface{}, Collection string, EventType bool) (interface{}, error)
 	FindMany(fields, projection, sort map[string]interface{}, limit, skip int64, results interface{}) error
+	FindManyEvents(fields, projection, sort map[string]interface{}, limit, skip int64,  results *[]map[string]interface{}) (error,[]map[string]interface{})
 
 }

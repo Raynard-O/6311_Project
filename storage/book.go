@@ -39,7 +39,8 @@ func (d *mongoconn) FindMany(fields, projection, sort map[string]interface{}, li
 	if sort != nil {
 		ops.Sort = sort
 	}
-
+//oplogReplay: true,
+//	filter: { ts: { $gte: new Timestamp(1514764800, 0) } } }
 
 	cursor, err :=  d.mongoDb.Collection("books").Find(nil, fields, ops)
 

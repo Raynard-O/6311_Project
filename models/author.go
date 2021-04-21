@@ -21,7 +21,7 @@ type Author struct {
 type AuthorEvent struct {
 	EventID primitive.ObjectID `json:"_id" bson:"_id"`
 	BookTitle string `json:"book_title" bson:"book_title"`
-	Authors []string `json:"authors" bson:"authors"`
+	Authors	string `json:"authors" bson:"authors"`
 	Event Events	`json:"event" bson:"event"`
 	EventType string `json:"event_type" bson:"event_type"`
 }

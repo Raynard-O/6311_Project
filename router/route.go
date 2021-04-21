@@ -53,7 +53,7 @@ func New() *echo.Echo {
 	book := controllers.InterfaceUsers(controllers.NewBook())
 
 
-	//url = auth/author/
+	//url = url + auth/author/
 	authors := auth.Group("/author")
 	authors.POST("/signup", author.Create)
 	authors.POST("/signin", author.Search)
@@ -64,12 +64,14 @@ func New() *echo.Echo {
 	readers.POST("/signin", reader.Search)
 
 
-	//url = auth/author/book/
-	books := authors.Group("/book")
-	books.POST("/add", book.Create)
+	//url = auth/book/
+	books := auth.Group("/book")
+	books.POST("/upload", book.Create)
 	books.GET("/search", book.Search)
 	books.GET("/select", book.Select)
-
+	books.GET("/dashboard", controllers.GetuserBooks)
+	//books.GET("/recommend", )
+	books.GET("/notify", controllers.GetAllNotifications)
 	return e
 }
 

@@ -1,9 +1,10 @@
 package thirdparty
 
 import (
-	"6311_Project/controllers"
+	"6311_Project/models"
 	"6311_Project/storage"
 	"context"
+	"fmt"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
@@ -21,26 +22,60 @@ type thirdParty struct {
 
 
 
-func (t *thirdParty)recommend(c echo.Context) error {
+func getAllAcceptedEvents( authorsName string) (error, []map[string]interface{}) {
+	DB, err := storage.MongoInit("ICDE", "books", context.Background())
 
-	DB, err := storage.MongoInit("ICDE", "authors", context.Background())
-	
 	if err != nil {
-		return controllers.BadRequestResponse(c, err.Error())
-	}
-	
-	last := thirdParty{
-		ID:     primitive.NewObjectID(),
-		lastId: primitive.ObjectID{},
-		Name: "lastID",
+		return err, nil
 	}
 
-	lastEvent, err := DB.AuthorSave(last, "3rdParty")
-	//get the last event you saw
+	if err != nil {
+		return err, nil
+	}
+	field := make(map[string]interface{})
+	filter := make(map[string]interface{})
+	filter["$regex"] = authorsName
 
-	//get everyother event after
-	//filter the author events
-	//get reader who searched for the this author
-	//send new author events to reader
-	return c.JSONPretty(http.StatusOK, lastEvent, "")
+	field["authors"] = filter
+
+	var output,ou  []map[string]interface{}
+	fmt.Println(field)
+	err, ou = DB.FindManyEvents(field, nil, nil, 0, 0, &output)
+	//fmt.Println( ou)
+	if err != nil {
+		return err,nil
+	}
+	return nil, ou
+}
+
+
+
+func Recommend(c echo.Context, authorsName string) error {
+	DB, err := storage.MongoInit("ICDE", "readers", context.Background())
+	err, events := getAllAcceptedEvents(authorsName)
+	if err != nil {
+		return err
+	}
+
+
+	for _,v := range events{
+		result := new(models.Reader)
+
+		err = DB.FindByID(v["user_id"], nil, &result )
+
+		fields := make(map[string]interface{})
+		fields["_id"] = v["user_id"]
+
+		changes := make(map[string]interface{})
+		message := "New Message!!! \n  " + "New Book from: " + v["authors"].(string) + "\n" + "Book Title: " + v["book_title"].(string) + "\n"
+		changes["notification"] = append(result.Notification, message)
+		//send them a  document
+		err = DB.UpdateOneUser(fields, changes)
+	if err != nil {
+		return err
+	}
+
+	}
+
+	return c.JSONPretty(http.StatusOK, "lastEvent", "")
 }

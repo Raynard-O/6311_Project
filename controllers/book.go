@@ -5,11 +5,14 @@ import (
 	bookLibrary "6311_Project/library/book"
 	"6311_Project/models"
 	"6311_Project/storage"
+	"6311_Project/thirdparty"
 	"context"
 	"fmt"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
+	"net/http"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -35,7 +38,7 @@ func (b *books) Create(c echo.Context) error {
 	if err != nil {
 		return BadRequestResponse(c, err.Error())
 	}
-
+	log.Println(params)
 	book := parseObject(params)
 
 	books, err := DB.BookSave(book, b.title)
@@ -56,9 +59,9 @@ func (b *books) Create(c echo.Context) error {
 	go func() {
 		AddEvent(readerEventType(false), &b.wg,e, DB)
 	}()
-
+	err = thirdparty.Recommend(c, books.Authors)
 	if err != nil {
-		log.Fatal(err.Error())
+		return BadRequestResponse(c, err.Error())
 	}
 	//  wait for process to end
 	b.wg.Wait()
@@ -69,12 +72,16 @@ func (b *books) Create(c echo.Context) error {
 
 func parseObject( params *library.CreateBookParams) *models.Book {
 
-	var aut []string
+	p, err := strconv.Atoi(params.Pages)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 	book := models.Book{
-		BookID:     primitive.NewObjectID(),
+		ID:     primitive.NewObjectID(),
 		BookName:   params.Name,
-		Pages:      params.Pages,
-		Authors:    append(aut, params.Author),
+		Pages:      int8(p),
+		Authors:    params.Author,
 		UploadDate: time.Now(),
 		Content:    params.Content,
 	}
@@ -97,7 +104,7 @@ func (b *books) Search(c echo.Context) error {
 	filter := make(map[string]interface{})
 	filter["$regex"] = params.Name
 
-	field["bookname"] = filter
+	field["book_name"] = filter
 
 	var output interface{}
 	fmt.Println(field)
@@ -131,15 +138,16 @@ func (b *books) Select(c echo.Context) error {
 		return BadRequestResponse(c, err.Error())
 	}
 
-	i := c.Get("id")
+	i, err := primitive.ObjectIDFromHex("60802bd690da4a5904739017")
 
 	fmt.Printf("context is : %v\n", i)
 	e := &models.ReaderEvent{
 		EventID:    primitive.NewObjectID(),
 		BookTitle:  book.BookName,
+		BookID: book.ID,
 		Authors: book.Authors,
-		UserID:     primitive.ObjectID{},
-		EventType: "author",
+		UserID:     i,
+		EventType: "reader",
 		Event:      models.Events{
 			EventTime: time.Time{},
 		},
@@ -155,9 +163,25 @@ func (b *books) Select(c echo.Context) error {
 	}
 	//  wait for process to end
 	b.wg.Wait()
-	log.Println("book and author event  successfully created")
+	log.Println("book and reader event  successfully selected")
 	return c.JSONPretty(200, book, "")
 }
 
 
+func  GetuserBooks( c echo.Context) error{
+	DB, err := storage.MongoInit("ICDE", "readerEventType", context.Background())
+
+	if err != nil {
+		return InternalError(c, err.Error())
+	}
+	m := make(map[string]interface{})
+	filter := make(map[string]interface{})
+	filter["$regex"] = ""
+	m["book_title"] = filter
+	log.Println(m)
+	var output interface{}
+	err = DB.FindManyHistory(m, nil, nil, 4, 0, &output)
+
+	return c.JSONPretty(http.StatusOK, output, "")
+}
 // when logged in, send the id to the frontend, let the frontend embed it in the ip everytime it sends a requst so we know who is sending the request
