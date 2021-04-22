@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"log"
 	"net/http"
 )
 
@@ -48,7 +49,14 @@ func getAllAcceptedEvents( authorsName string) (error, []map[string]interface{})
 	return nil, ou
 }
 
-
+func ThirdrdpartyApi( c echo.Context) error{
+	err, output := getAllAcceptedEvents("")
+	if err != nil {
+		return err
+	}
+	log.Println(output)
+	return c.JSONPretty( http.StatusOK, output," ")
+}
 
 func Recommend(c echo.Context, authorsName string) error {
 	DB, err := storage.MongoInit("ICDE", "readers", context.Background())

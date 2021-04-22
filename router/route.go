@@ -3,6 +3,7 @@ package router
 import (
 	"6311_Project/config"
 	"6311_Project/controllers"
+	"6311_Project/thirdparty"
 	"context"
 	"flag"
 	"fmt"
@@ -72,6 +73,11 @@ func New() *echo.Echo {
 	books.GET("/dashboard", controllers.GetuserBooks)
 	//books.GET("/recommend", )
 	books.GET("/notify", controllers.GetAllNotifications)
+
+
+	// thirdparty
+
+	e.GET("thirdparty", thirdparty.ThirdrdpartyApi)
 	return e
 }
 
